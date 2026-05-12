@@ -335,7 +335,7 @@
   Consider one token, \textit{rates}.  It gets a query vector $q_{\text{rates}}$;
   every token gets a key vector $k_j$.  The raw relevance score is a scalar product:
   \[
-    s_{\text{rates},j} = q_{\text{rates}}^\top k_j.
+    \alpha_{\text{rates},j} = q_{\text{rates}}^\top k_j.
   \]
   The new vector is then a weighted sum of value vectors:
   \[
@@ -1601,13 +1601,13 @@ Self-attention is based on dot products, so this property is especially useful.
 ]
 
 %% Nodes (bottom to top to follow paper convention)
-\node[box] (mha)  at (0, 0)    {Multi-Head\\Self-Attention};
-\node[norm] (an1) at (0, 1.10) {Add \& Norm};
-\node[box]  (ffn) at (0, 2.10) {Feed-Forward\\Network};
-\node[norm] (an2) at (0, 3.20) {Add \& Norm};
+\node[box] (mha)  at (0, -1)    {Multi-Head\\Self-Attention};
+\node[norm] (an1) at (0, 0.30) {Add \& Norm};
+\node[box]  (ffn) at (0, 1.60) {Feed-Forward\\Network};
+\node[norm] (an2) at (0, 2.90) {Add \& Norm};
 
 %% Input / Output labels
-\node[font=\small] (inp) at (0, -1.0) {%
+\node[font=\small] (inp) at (0, -2.5) {%
   $X \in \mathbb{R}^{n \times \dmodel}$};
 \node[font=\small] (out) at (0,  4.3) {%
   $X'' \in \mathbb{R}^{n \times \dmodel}$};
@@ -1622,19 +1622,19 @@ Self-attention is based on dot products, so this property is especially useful.
 %% First residual connection (around MHA)
 \draw[res]
   (inp.east) ++( 0.05,0)
-    -| ++(1.0, 0)
+    -| ++(2, 0)
     |- (an1.east);
-\node[lbl, anchor=west] at (1.05, 0.55) {residual};
+\node[lbl, anchor=west] at (2.05, -1) {residual};
 
 %% Second residual connection (around FFN)
 \draw[res]
   (an1.east) ++(0.05,0)
-    -| ++(1.0, 0)
+    -| ++(1.5, 0)
     |- (an2.east);
-\node[lbl, anchor=west] at (1.05, 1.65) {residual};
+\node[lbl, anchor=west] at (2.05, 1.65) {residual};
 
 %% Dimension annotations
-\node[lbl, anchor=east] at (-1.85, -1.0) {shape:};
+\node[lbl, anchor=east] at (-1.85, -2.5) {shape:};
 \node[lbl, anchor=east] at (-1.85,  4.3) {shape:};
 
 \end{tikzpicture}
@@ -2247,30 +2247,108 @@ masked-self-attention + FFN stack.
   step (path length $\mathcal{O}(1)$), while being fully parallelisable on modern
   hardware such as GPUs and TPUs.
 \end{frame}
-
-
-
-
-
-
-
-
-
+%__________________________________________________________________________
+%
+\section{Transformed Training Vs Inference (Simplified!}
+%__________________________________________________________________________
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.7]{../05-pictures/chapter-04_pic_5.png} 
+\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.4]{../05-pictures/chapter-04_pic_6.png} 
+\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.4]{../05-pictures/chapter-04_pic_7.png} 
+\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.4]{../05-pictures/chapter-04_pic_8.png} 
+\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.4]{../05-pictures/chapter-04_pic_9.png} 
+\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.4]{../05-pictures/chapter-04_pic_10.png} 
+\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.4]{../05-pictures/chapter-04_pic_11.png} 
+\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.4]{../05-pictures/chapter-04_pic_12.png} 
+\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.4]{../05-pictures/chapter-04_pic_13.png} 
+\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.4]{../05-pictures/chapter-04_pic_14.png} 
+\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.4]{../05-pictures/chapter-04_pic_15.png} 
+\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Training Example}
+\begin{center}
+\includegraphics[scale=.4]{../05-pictures/chapter-04_pic_16.png} 
+\end{center}
+\end{frame}
 %__________________________________________________________________________
 %
 \section{From the Transformer to Specialised Architectures}
 %__________________________________________________________________________
-%
-\begin{frame}[plain]
-  \vfill
-  \begin{beamercolorbox}[sep=12pt,center,rounded=true,shadow=true]{title}
-    \usebeamerfont{title}%
-    From the Transformer\\to Specialised Architectures
-  \end{beamercolorbox}
-  \vfill
-\end{frame}
-%
-%..................................................................
 %
 \begin{frame}{The Original Task: Sequence-to-Sequence}
 
@@ -2633,7 +2711,7 @@ on one self-supervised objective: \textbf{next-token prediction}.
 %
 %..................................................................
 %
-\begin{frame}{Looking Ahead: Lesson 4}
+\begin{frame}{Looking Ahead: Lesson 5}
   \begin{block}{Pre-trained Models, LLMs, and Financial Applications}
     Now that we understand how the Transformer works, Lesson~4 will address what
     happens when we scale it:
