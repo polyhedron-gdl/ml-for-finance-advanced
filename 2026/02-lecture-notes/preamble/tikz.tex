@@ -1,0 +1,28 @@
+%
+%===================================================================================================
+%
+% TikZ Libraries
+%
+%===================================================================================================
+
+\usetikzlibrary{
+    arrows.meta,
+    positioning,
+    fit,
+    calc,
+    shapes.geometric,
+    backgrounds,
+    matrix
+}
+
+% ── Reusable TikZ styles ─────────────────────────────────────
+\tikzset{
+  block/.style   = {draw, rounded corners, minimum width=2.0cm,
+                    minimum height=0.60cm, align=center, font=\small},
+  sblock/.style  = {draw, rounded corners, minimum width=1.4cm,
+                    minimum height=0.55cm, align=center, font=\small},
+  token/.style   = {draw, rounded corners, minimum width=1.1cm,
+                    minimum height=0.55cm, font=\small},
+  arr/.style     = {->, thick, boIndigo},
+  arrg/.style    = {->, gray!60, line width=0.7pt}
+}

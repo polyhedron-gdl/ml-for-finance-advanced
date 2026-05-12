@@ -1,0 +1,630 @@
+\documentclass[11pt]{beamer}
+\usetheme{CambridgeUS}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{pgfpages}
+\usepackage{framed}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{soul}
+\usepackage{empheq}
+\usepackage{bm}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{minted}
+\usepackage{hyperref}
+%\usepackage{coffeestains}
+
+% Load tcolorbox listings support
+\tcbuselibrary{listings}
+
+\usetikzlibrary{arrows.meta, positioning, calc, fit}
+
+% Theme
+%\setbeamercolor{background canvas}{bg=black}
+%\setbeamercolor{normal text}{fg=white}
+
+% Custom colors for weights and biases
+\definecolor{w1col}{RGB}{255,180,0}     % Yellow
+\definecolor{w2col}{RGB}{180,90,30}     % Orange-brown
+\definecolor{b1col}{RGB}{0,255,0}       % Green
+
+% Custom colors
+\definecolor{codebg}{rgb}{0.97,0.97,0.97}
+\definecolor{codeborder}{rgb}{0.8,0.8,0.8}
+
+% Define custom code box
+\newtcblisting{codebox}{
+  listing only,
+  colback=codebg,
+  colframe=codeborder,
+  arc=6pt,
+  outer arc=6pt,
+  boxrule=0.5pt,
+  boxsep=4pt,
+  left=4pt,
+  right=4pt,
+  top=4pt,
+  bottom=4pt,
+  listing options={
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{orange},
+    commentstyle=\color{gray},
+    showstringspaces=false,
+    breaklines=true,
+    morekeywords={np}
+  }
+}
+
+\newtcblisting{codebox2}{
+  listing only,
+  colback=codebg,
+  colframe=codeborder,
+  arc=6pt,
+  outer arc=6pt,
+  boxrule=0.5pt,
+  boxsep=4pt,
+  left=4pt,
+  right=4pt,
+  top=4pt,
+  bottom=4pt,
+  listing options={
+    language=Python,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{orange},
+    commentstyle=\color{gray},
+    showstringspaces=false,
+    breaklines=true,
+    morekeywords={np}
+  }
+}
+
+% The replacement character � (often displayed as a black rhombus with a white
+% question mark) is a symbol found in the Unicode standard at code point U
+% +FFFD in the Specials table. It is used to indicate problems when a system 
+% is unable to render a stream of data to a correct symbol.[4] It is usually 
+% seen when the data is invalid and does not match any character. For this 
+% reason we map explicitly this character to a blanck space.
+\DeclareUnicodeCharacter{FFFD}{ }
+
+\newcommand*{\itemimg}[1]{%
+  \raisebox{-.3\baselineskip}{%
+    \includegraphics[
+      height=\baselineskip,
+      width=\baselineskip,
+      keepaspectratio,
+    ]{#1}%
+  }%
+}
+
+\newtcbox{\mymath}[1][]{%
+    nobeforeafter, math upper, tcbox raise base,
+    enhanced, colframe=blue!30!black,
+    colback=blue!10, boxrule=1pt,
+    #1}
+
+\newcommand{\highlight}[1]{%
+  \colorbox{yellow!100}{$\displaystyle#1$}}
+
+\author{Giovanni Della Lunga\\{\footnotesize giovanni.dellalunga@unibo.it}}
+%\title{4.1 - Linear and Logistic Regression}
+%\title{4.2 - Decision Trees}
+\title{Appendix A \\ Introduction to Keras}
+%\title{6 - Text Vectorization}
+%\title{7 - Classification for Text Analysis}
+%\title{8 - Clustering for Text Similarity}
+%\title{9 - Information Extraction}
+\subtitle{} % (optional)
+\setbeamercovered{transparent} 
+\institute{Advanced Machine Learning for Finance} 
+\date{Bologna - April-May, 2026} 
+
+\begin{document}
+
+%\begin{frame}
+%\includegraphics[width=\linewidth]{img/halloween-seminar-logo.PNG}
+%\end{frame}
+
+\begin{frame}
+\titlepage
+%\coffeestainA{0.9}{0.85}{-25}{2.5cm}{1.3cm}
+\end{frame}
+
+\AtBeginSection[]
+{
+  %\begin{frame}<beamer>
+  %\footnotesize	
+  %\frametitle{Outline}
+  %\begin{multicols}{2}
+  %\tableofcontents[currentsection]
+  %\end{multicols}	  
+  %\normalsize
+  %\end{frame}
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}  	\usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+\AtBeginSubsection{\frame{\subsectionpage}}
+
+
+\begin{frame}{Keras}
+Keras is a popular open-source deep learning library that is written in Python. It is designed to be user-friendly, modular, and extensible, which makes it a great tool for beginners and experts alike. Here are some key points about Keras:
+\begin{itemize}
+\item User-friendly API: Keras provides a high-level API that makes it easy to build and train deep learning models. It supports both CPU and GPU computations, and it runs seamlessly on different platforms.
+\item Modular architecture: Keras is built on a modular architecture, which means that it provides a set of building blocks that you can combine to create complex deep learning models. This allows you to experiment with different architectures and see what works best for your problem.
+\end{itemize}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Keras}
+\begin{itemize}
+\item Starting from 2019, Keras does not supports multiple backends but it is strongly integrated into tensorflow.
+\item Pre-built models and layers: Keras provides a set of pre-built models and layers that you can use to jumpstart your deep learning projects. These models and layers are optimized for different tasks, such as image recognition, natural language processing, and time series analysis.
+\item Easy customization: Keras allows you to customize your models and layers easily. You can add or remove layers, change the hyperparameters, and fine-tune the models to improve their performance.
+\end{itemize}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Keras}
+\begin{itemize}
+\item Built-in utilities: Keras provides a set of built-in utilities that make it easy to preprocess your data, visualize your models, and monitor your training progress. These utilities can save you a lot of time and effort when working on deep learning projects.
+
+\item Large community: Keras has a large and active community of users and contributors, who share their knowledge and experience through forums, blogs, and tutorials. This means that you can find resources and help easily when you run into issues or have questions.
+
+\item Integration with other libraries: Keras integrates seamlessly with other Python libraries, such as NumPy, Pandas, and Scikit-learn. This allows you to use these libraries together with Keras to preprocess your data, analyze your results, and build end-to-end deep learning pipelines.
+\end{itemize}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Introduction to keras: a practical problem}
+\begin{itemize}
+\item The problem of automatic recognition of handwritten numbers, also known as digit recognition, is a classic problem in the field of pattern recognition and computer vision. It involves the task of automatically identifying and classifying handwritten digits into their corresponding numerical values.
+\item The challenge of digit recognition arises due to the variability in handwriting styles and the different ways in which people write the same digit. This variation can be caused by factors such as different writing instruments, writing speed, and writing pressure. Additionally, digits can be written in different sizes, orientations, and positions, further adding to the complexity of the problem.
+\end{itemize}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Introduction to keras: a practical problem}
+
+	\begin{itemize}
+	\item The problem we are trying to solve here is to classify grayscale images of handwritten digits (28 pixels by 28 pixels), into their 10 categories (0 to 9). 
+	\item The dataset we will use is the MNIST dataset, a classic dataset in the machine learning community, which has been around for almost as long as the field itself and has been very intensively studied. 
+	\item It's a set of 60,000 training images, plus 10,000 test images, assembled by the National Institute of Standards and Technology (the NIST in MNIST) in the 1980s. 
+	\end{itemize}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Introduction to keras: a practical problem}
+	\begin{itemize}
+		\item As we have said, in the MNIST dataset each digit is stored in a grayscale image with a size of 28x28 pixels. 
+		\item In the following you can see the first 10 digits from the training set:
+	\end{itemize}
+	\begin{center}
+	\includegraphics[scale=.75]{../05-pictures/appendix-A_pic_0.png}
+	\end{center}
+\end{frame}
+%..................................................................
+\begin{frame}[fragile]
+\frametitle{Introduction to keras: Loading the dataset}
+\begin{itemize}
+\item Keras provides seven different datasets, which can be loaded in using Keras directly. 
+\item These include image datasets as well as a house price and a movie review datasets.
+\item The MNIST dataset comes pre-loaded in Keras, in the form of a set of four Numpy arrays
+\end{itemize}
+\rule{\textwidth}{1pt}
+\scriptsize
+\begin{minted}{python}
+import keras
+
+from keras.datasets import mnist
+
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+
+\end{minted}
+\rule{\textwidth}{1pt}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Introduction to keras}
+\textbf{The typical Keras workflows}
+\vspace{0.5cm}
+	\begin{itemize}
+		\item Define your training data: input tensor and target tensor
+		\item Define a network of layers(or model ) that maps input to our targets.
+		\item Configure the learning process by choosing a loss function, an optimizer, and some metrics to monitor.
+		\item Iterate your training data by calling the fit() method of your model.
+	\end{itemize}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Introduction to keras: Layers}
+	\begin{itemize}
+		\item This is the building block of neural networks which are stacked or combined together to form a neural network model.
+		\item It is a data-preprocessing module that takes one or more input tensors and outputs one or more tensors. 
+		\item These layers together contain the network's knowledge. 
+		\item Different layers are made for different tensor formats and data processing.
+	\end{itemize}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}[fragile]
+\frametitle{Creating a model with the sequential API }
+	\begin{itemize}
+		\item The easiest way of creating a model in Keras is by using the sequential API, which lets you stack one layer after the other. 
+		\item The problem with the sequential API is that it doesn't allow models to have multiple inputs or outputs, which are needed for some problems.
+		\item Nevertheless, the sequential API is a perfect choice for most problems.
+	\end{itemize}
+\rule{\textwidth}{1pt}
+\scriptsize
+\begin{minted}{python}
+
+from keras import models
+from keras import layers
+
+network = models.Sequential()
+network.add(layers.Dense(512, activation='relu', input_shape=(28 * 28,)))
+network.add(layers.Dense(10, activation='softmax'))
+
+\end{minted}
+\rule{\textwidth}{1pt}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}[fragile]
+\frametitle{Introduction to keras}
+Let’s go through this code line by line:
+\begin{itemize}
+\item The first line creates a Sequential model. 
+\item This is the simplest kind of Keras model, for neural networks that are just composed of a single stack of layers, connected sequentially. 
+\item This is called the \textbf{sequential} API.
+\end{itemize}
+
+\rule{\textwidth}{1pt}
+\scriptsize
+\begin{minted}{python}
+
+from keras import models
+from keras import layers
+
+network = models.Sequential()
+
+\end{minted}
+\rule{\textwidth}{1pt}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}[fragile]
+\frametitle{Introduction to keras}
+
+Next, we build the first layer and add it to the model. 
+\begin{itemize}
+\item It is \textbf{\textit{Dense}} hidden layer with 512 neurons. 
+\item It will use the ReLU activation function. 
+\item Each Dense layer manages its own weight matrix, containing all the connection weights between the neurons and their inputs. 
+\item It also manages a vector of bias terms (one per neuron). 
+\item When it receives some input data, it computes 
+
+$$\phi \left( Z^{[1]} = W^{[1]} \cdot X + B^{[1]} \right), \quad \phi(z) = \textit{ReLU}(z)$$
+\end{itemize}
+\rule{\textwidth}{1pt}
+\scriptsize
+\begin{minted}{python}
+
+network.add(layers.Dense(512, activation='relu', input_shape=(28 * 28,)))
+
+\end{minted}
+\rule{\textwidth}{1pt}
+
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}[fragile]
+\frametitle{Introduction to keras}
+
+Finally, we add a Dense output layer with 10 neurons (one per class). 
+\begin{itemize}
+\item Using a 10-way "softmax" layer means that it will return an array of 10 probability scores (summing to 1). 
+\item Each score will be the probability that the current digit image belongs to one of our 10 digit classes.
+\end{itemize}
+
+\rule{\textwidth}{1pt}
+\scriptsize
+\begin{minted}{python}
+
+network.add(layers.Dense(10, activation='softmax'))
+
+\end{minted}
+\rule{\textwidth}{1pt}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}[fragile]
+\frametitle{Introduction to keras}
+
+\begin{itemize}
+\item The model’s summary() method displays all the model’s layers, including each layer’s name (which is automatically generated unless you set it when creating the layer), its output shape (None means the batch size can be anything), and its number of parameters. 
+\end{itemize}
+\rule{\textwidth}{1pt}
+\scriptsize
+\begin{minted}{python}
+
+network.summary()
+
+\end{minted}
+\rule{\textwidth}{1pt}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Introduction to keras}
+	\begin{itemize}
+\item The summary ends with the total number of parameters, including trainable and non-trainable parameters. 
+\item Here we only have trainable parameters.	
+	\end{itemize}
+	\begin{center}
+	\includegraphics[scale=.6]{../05-pictures/appendix-A_pic_1.png} 
+	\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Compile a Model}
+	\begin{itemize}
+		\item Before we can start training our model we need to configure the learning process. 
+		\item For this, we need to specify an optimizer, a loss function and optionally some metrics like accuracy.
+		\item The \textbf{loss function} is a measure on how good our model is at achieving the given objective.
+		\item An \textbf{optimizer} is used to minimize the loss(objective) function by updating the weights using the gradients.
+	\end{itemize}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Loss Function}
+	\begin{itemize}
+		\item Choosing the right Loss Function for the problem is very important, the neural network can take any shortcut to minimize the loss. 
+		\item So, if the objective doesn't fully correlate with success for the task at hand, your network will end up doing things you may not have wanted.
+	\end{itemize}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Loss Function}
+For common problems like Classification, Regression and Sequence prediction, they are simple guidelines to choose a loss function. 
+
+\vspace{0.5cm}
+For: \begin{itemize}
+\item Two- Class classification you can choose binary cross-entropy
+\item Multi-Class Classification you can choose Categorical Cross-entropy.
+\item Regression Problem you can choose Mean-Squared Error
+\end{itemize}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Activation Function}
+\textbf{Softmax Activation Function} 
+\vspace{0.5cm}
+\begin{itemize}
+\item Softmax is an activation function that scales numbers/logits into probabilities. 
+\item The output of a Softmax is a vector (say $v$) with probabilities of each possible outcome. 
+\item The probabilities in vector $v$ sums to one for all possible outcomes or classes 
+\item It is often used as the last activation function of a neural network to normalize the output of a network to a probability distribution over predicted output classes
+\item You can think of softmax function as a sort of generalization to multiple dimension of the logistic function
+\end{itemize}
+\end{frame}
+%..................................................................
+\begin{frame}{Activation Function}
+\textbf{Softmax Activation Function.} 
+Mathematically, softmax is defined as
+\begin{equation}
+S(y)_i= \frac{\exp{y_i}}{\sum\limits_{j=1}^n \, \exp{y_j}}
+\end{equation}
+\begin{center}
+\includegraphics[scale=.45]{../05-pictures/appendix-A_pic_2.png} 
+\end{center}
+\end{frame}
+%..................................................................
+\begin{frame}{Loss Function}
+\textbf{Categorical Cross-Entropy} 
+\begin{itemize}
+\item Remember the logistic Loss Function:
+$$
+L(y, \hat y) = - y \, \log \hat y - (1-y) \, \log(1-\hat y) = -\sum\limits_{j=1}^2 \, y_j \log \hat y_j
+$$
+\item Generalizing this result to the n-class classification problem we have
+\begin{equation}
+L = -\sum\limits_{j=1}^{N_C} \, y_j \log \hat y_j
+\end{equation}
+This last equation define the so called \textit{cross-entropy}
+\end{itemize}
+\end{frame}
+%..................................................................
+\begin{frame}{Loss Function}
+\textbf{Categorical Cross-Entropy} 
+\begin{itemize}
+\item In the previous example, Softmax converts logits into probabilities. 
+\item The purpose of the Cross-Entropy is to take the output probabilities ($P$) and measure the distance from the truth values
+
+\end{itemize}
+\begin{center}
+\includegraphics[scale=.45]{../05-pictures/appendix-A_pic_3.png} 
+\end{center}
+\end{frame}
+%..................................................................
+\begin{frame}{Loss Function}
+\textbf{Categorical Cross-Entropy} 
+\begin{itemize}
+\item The categorical cross-entropy is computed as follows
+\end{itemize}
+\begin{center}
+\includegraphics[scale=.45]{../05-pictures/appendix-A_pic_4.png} 
+\end{center}
+\end{frame}
+%..................................................................
+\begin{frame}{Optimizer}
+\textbf{RMSProp} 
+\scriptsize
+\begin{itemize}
+\item Gradient descent is an optimization algorithm that follows the negative gradient of an objective function in order to locate the minimum of the function.
+
+\item A limitation of gradient descent is that it uses the same step size (learning rate) for each input variable. 
+
+\item AdaGrad is an extension of the gradient descent optimization algorithm that allows the step size in each dimension used by the optimization algorithm to be automatically adapted based on the gradients seen for the variable (partial derivatives) over the course of the search.
+
+\item A limitation of AdaGrad is that it can result in a very small step size for each parameter by the end of the search that can slow the progress of the search down too much and may mean not locating the optima.
+
+\item Root Mean Squared Propagation, or RMSProp, is an extension of gradient descent and the AdaGrad version of gradient descent that uses a decaying average of partial gradients in the adaptation of the step size for each parameter. 
+
+\item The use of a decaying moving average allows the algorithm to forget early gradients and focus on the most recently observed partial gradients seen during the progress of the search, overcoming the limitation of AdaGrad. 
+\end{itemize}
+\end{frame}
+%..................................................................
+\begin{frame}[fragile]
+\frametitle{Compile the model}
+\scriptsize
+
+So, to make our network ready for training, we need to pick three things, as part of "compilation" step:
+\begin{itemize}
+\item A loss function: the is how the network will be able to measure how good a job it is doing on its training data, and thus how it will be 
+able to steer itself in the right direction.
+\item  An optimizer: this is the mechanism through which the network will update itself based on the data it sees and its loss function.
+\item Metrics to monitor during training and testing. Here we will only care about accuracy (the fraction of the images that were correctly 
+classified).
+\end{itemize}
+
+\rule{\textwidth}{1pt}
+\begin{minted}{python}
+
+network.compile(optimizer='rmsprop',
+                loss='categorical_crossentropy',
+                metrics=['accuracy'])
+                
+\end{minted}
+\rule{\textwidth}{1pt}
+\end{frame}
+%..................................................................
+\begin{frame}[fragile]
+\frametitle{Introduction to keras: Training}
+\scriptsize
+
+	\begin{itemize}
+	\item 
+Before training, we will preprocess our data by reshaping it into the shape that the network expects, and scaling it so that all values are in 
+the `[0, 1]` interval. 
+\item Previously, our training images for instance were stored in an array of shape `(60000, 28, 28)` of type `uint8` with 
+values in the `[0, 255]` interval. 
+\item We transform it into a `float32` array of shape `(60000, 28 * 28)` with values between 0 and 1.
+	\end{itemize}
+\rule{\textwidth}{1pt}
+\begin{minted}{python}
+
+train_images = train_images.reshape((60000, 28 * 28))
+train_images = train_images.astype('float32') / 255
+
+test_images = test_images.reshape((10000, 28 * 28))
+test_images = test_images.astype('float32') / 255
+
+\end{minted}
+\rule{\textwidth}{1pt}
+\end{frame}
+%..................................................................
+\begin{frame}[fragile]
+\frametitle{Introduction to keras: Training}
+
+We also need to categorically encode the labels:
+
+\rule{\textwidth}{1pt}
+\scriptsize
+\begin{minted}{python}
+
+from keras.utils.np_utils import to_categorical
+
+train_labels = to_categorical(train_labels)
+test_labels = to_categorical(test_labels)
+
+\end{minted}
+\rule{\textwidth}{1pt}
+\end{frame}
+%..................................................................
+\begin{frame}[fragile]
+\frametitle{Introduction to keras: Training}
+\textbf{What is an epoc?}
+\footnotesize
+	\begin{itemize}
+	\item 
+An epoch is a term used in machine learning and indicates the number of passes of the entire training dataset the machine learning algorithm has completed. Datasets are usually grouped into batches (especially when the amount of data is very large). Some people use the term iteration loosely and refer to putting one batch through the model as an iteration.   
+\item
+If the batch size is the whole training dataset then the number of epochs is the number of iterations. For practical reasons, this is usually not the case. Many models are created with more than one epoch. The general relation where dataset size is $d$, number of epochs is $e$, number of iterations is $i$, and batch size is $b$ would be $d \cdot e = i \cdot b$. 
+\item 
+Determining how many epochs a model should run to train is based on many parameters related to both the data itself and the goal of the model, and while there have been efforts to turn this process into an algorithm, often a deep understanding of the data itself is indispensable.
+
+	\end{itemize}
+\end{frame}
+%..................................................................
+\begin{frame}[fragile]
+\frametitle{Introduction to keras: Training}
+We are now ready to train our network, which in Keras is done via a call to the `fit` method of the network: we "fit" the model to its training data.
+\vspace{0.5cm}
+\scriptsize
+\rule{\textwidth}{1pt}
+\begin{minted}{python}
+
+history = network.fit(train_images, train_labels, epochs=5, batch_size=128)
+
+\end{minted}
+\rule{\textwidth}{1pt}
+\end{frame}
+%..................................................................
+\begin{frame}[fragile]
+\frametitle{Visualizing the training process }
+\scriptsize
+	\begin{itemize}
+		\item We can visualize our training and testing accuracy and loss for each epoch so we can get intuition about the performance of our model. 
+		\item The accuracy and loss over epochs are saved in the history variable we got whilst training and we will use Matplotlib to visualize this data.
+	\end{itemize}
+
+\rule{\textwidth}{1pt}
+\begin{minted}{python}
+
+# list all data in history
+print(history.history.keys())
+# summarize history for accuracy
+plt.plot(history.history['mae'])
+plt.plot(history.history['val_mae'])
+plt.title('model mae')
+plt.ylabel('mae')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+
+\end{minted}
+\rule{\textwidth}{1pt}
+\end{frame}
+%
+%=====================================================================
+%
+\end{document}
+%
+%=====================================================================
+%

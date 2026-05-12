@@ -1,0 +1,90 @@
+%
+%===================================================================================================
+%
+% Mathematical Macros
+%
+%===================================================================================================
+
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\bx}{\bm{x}}
+\newcommand{\bh}{\bm{h}}
+\newcommand{\bw}{\bm{w}}
+\newcommand{\bW}{\bm{W}}
+\newcommand{\bb}{\bm{b}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\newcommand{\vw}{\mathbf{w}}
+\newcommand{\vwt}{\tilde{\mathbf{w}}}
+%
+%===================================================================================================
+%
+% Text and Highlighting Macros
+%
+%===================================================================================================
+
+\newcommand{\soft}[1]{\textcolor{CourseBlue}{\textbf{#1}}}
+
+\newcommand{\highlight}[1]{%
+    \colorbox{yellow!25}{$\displaystyle #1$}
+}
+
+%
+%===================================================================================================
+%
+% Beamer-Compatible Highlight Fix for the soul Package
+%
+%===================================================================================================
+
+\makeatletter
+\let\HL\hl
+\renewcommand\hl{%
+  \let\set@color\beamerorig@set@color
+  \let\reset@color\beamerorig@reset@color
+  \HL}
+\makeatother
+
+%
+%===================================================================================================
+%
+% Custom Intuition Box
+%
+%===================================================================================================
+
+\newcommand{\intuition}[1]{%
+  \vspace{4pt}
+  \begin{tikzpicture}
+    \node[
+        fill=offwhite,
+        rounded corners=4pt,
+        inner sep=6pt,
+        text width=0.92\textwidth
+    ] {%
+      \textcolor{teal}{\textbf{Intuition:}} 
+      \textcolor{darktext}{\small #1}
+    };
+  \end{tikzpicture}
+}
+
+
+\newcommand{\dmodel}{d_{\mathrm{model}}}
+\newcommand{\dff}{d_{\mathrm{ff}}}
+\newcommand{\dk}{d_k}
+\newcommand{\dv}{d_v}
+
+% ─────────────────────────────────────────────────────────────────────
+%  \drawcell{cx}{cy}{border-color}{fill-color}
+%  Draws the RNN cell rectangle + 3 neuron circles at (cx, cy).
+% ─────────────────────────────────────────────────────────────────────
+\newcommand{\drawcell}[4]{%
+  \fill[#4, rounded corners=3pt]
+    ({#1-0.68},{#2-1.10}) rectangle ({#1+0.68},{#2+1.10});
+  \draw[color=#3, line width=1.5pt, rounded corners=3pt]
+    ({#1-0.68},{#2-1.10}) rectangle ({#1+0.68},{#2+1.10});
+  \draw[color=#3, line width=0.9pt] (#1,{#2+0.55}) circle(0.21);
+  \draw[color=#3, line width=0.9pt] (#1, #2)        circle(0.21);
+  \draw[color=#3, line width=0.9pt] (#1,{#2-0.55}) circle(0.21);
+}
+% Bold vectors shortcut (match existing notation)
+\newcommand{\vct}[1]{\bm{#1}}
